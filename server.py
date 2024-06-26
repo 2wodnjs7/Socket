@@ -3,6 +3,7 @@ from datetime import datetime
 import sys
 
 #serverIP = '172.30.1.8'
+#serverIP = '10.223.124.8'
 serverIP = '127.0.0.1'
 serverPort = 80
 serverSocket = socket(AF_INET, SOCK_STREAM)
