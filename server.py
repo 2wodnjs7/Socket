@@ -27,9 +27,10 @@ def readURL(url):
 
 if __name__ == '__main__':
 
-    #serverIP = '172.30.1.8'
-    serverIP = '10.223.124.8'
-    #serverIP = '127.0.0.1'
+    serverIP = '172.30.1.8' # home main
+    #serverIP = '10.223.124.8' # laptop main
+    #serverIP = '172.24.68.21' # home wsl
+    #serverIP = '127.0.0.1' # loopback
     serverPort = 80
     serverSocket = socket(AF_INET, SOCK_STREAM)
     serverSocket.bind((serverIP, serverPort))
