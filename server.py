@@ -75,6 +75,8 @@ if __name__ == '__main__':
     connectionSocket, addr = serverSocket.accept()      # 연결 수락     : 클라이언트 연결을 수락 및 클라이언트와 연결할 새로운 소켓 생성
     print('[Connected to the client.]')
     print()
+    print('[Waiting for client\'s request..]')
+    print()
     sys.stdout.flush()                                  # 출력이 buffering 되지 않도록 사용
 
     while True:
@@ -238,11 +240,7 @@ if __name__ == '__main__':
             if not keep_alive:
                 connectionSocket.close()
                 break
-
-            else:
-                print('[Waiting for client\'s request..]')
-                print()
-                sys.stdout.flush()  # 출력이 buffering 되지 않도록 사용
+                
 
         # 예외 발생 시 연결된 소켓 연결 끊기 및 프로그램 종료
         except Exception as err:

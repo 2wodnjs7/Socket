@@ -10,7 +10,6 @@ def create_socket_and_send_message():
     clientSocket.connect((serverIP, serverPort))    # 특정 서버 IP, Port에 연결 요청
     print('[Connected to the server.]')
 
-
     while True:
         # request할 http 구문을 미리 배열에 저장하여 사용
         # POST, PUT의 경우 body를 함께 저장
@@ -42,7 +41,6 @@ def create_socket_and_send_message():
         # 입력받은 requestNum, keep_alive 유효성 확인
         if 1 > requestNum or len(requestList)-1 < requestNum and keep_alive not in ('y', 'n'):
             print('[Invalid number.]')
-            clientSocket.close()
             continue
 
         # 1 <= requestNum <= 6은 body가 없는 GET, HEAD / 그 외에는 body가 있는 POST, PUT
@@ -53,19 +51,19 @@ def create_socket_and_send_message():
             request_message = requestList[requestNum][0] + '\r\n'
         
         # http response header 
-        request_message += 'Host: 172.30.1.8:12000\r\n'         # Host: server의 도메인을 입력
-        if keep_alive == 'y':                                   # Connection: HTTP 1.1의 특성 중 하나인 TCP Connection을 계속 유지할 지 정하는 헤더
-            request_message += 'Connection: Keep-Alive\r\n'     # 입력받은 keep_alive가 'y'면 Connection: Keep-Alive
+        request_message += 'Host: ' + serverIP + ':' + str(serverPort) + '\r\n'             # Host: server의 도메인을 입력
+        if keep_alive == 'y':                                                               # Connection: HTTP 1.1의 특성 중 하나인 TCP Connection을 계속 유지할 지 정하는 헤더
+            request_message += 'Connection: Keep-Alive\r\n'                                 # 입력받은 keep_alive가 'y'면 Connection: Keep-Alive
         elif keep_alive == 'n':
-            request_message += 'Connection: close\r\n'          # 입력받은 keep_alive가 'n'면 Connection: close
-        request_message += 'Cache-Control: max-age=0\r\n'       # Cache_Control: 불필요한 데이터 요청을 줄이기 위해 사용하는 헤더
-        if 1 <= requestNum <= 6:                                # Accept: client에서 받을데이터 형식
-            request_message += 'Accept: text/html\r\n'          # GET, HEAD는 text/html
+            request_message += 'Connection: close\r\n'                                      # 입력받은 keep_alive가 'n'면 Connection: close
+        request_message += 'Cache-Control: max-age=0\r\n'                                   # Cache_Control: 불필요한 데이터 요청을 줄이기 위해 사용하는 헤더
+        if 1 <= requestNum <= 6:                                                            # Accept: client에서 받을데이터 형식
+            request_message += 'Accept: text/html\r\n'                                      # GET, HEAD는 text/html
         else:
-            request_message += 'Accept: application/json\r\n'   # POST, PUT는 application/json
-        request_message += 'Accept-Charset: utf-8\r\n'          # Accept-Charset: 클라이언트가 지원하는 문자 인코딩을 알리는 헤더
-        request_message += 'Accept-Encoding: gzip, deflate\r\n' # Accept-Encoding: 요청에 대한 응답 메시지에 승인되는 인코딩을 표시하기 위한 헤더
-        request_message += 'Accept-Language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7\r\n\r\n' # Accept-Language: 클라이언트가 서버로부터 받고자 하는 언어를 나타내는 헤더
+            request_message += 'Accept: application/json\r\n'                               # POST, PUT는 application/json
+        request_message += 'Accept-Charset: utf-8\r\n'                                      # Accept-Charset: 클라이언트가 지원하는 문자 인코딩을 알리는 헤더
+        request_message += 'Accept-Encoding: gzip, deflate\r\n'                             # Accept-Encoding: 요청에 대한 응답 메시지에 승인되는 인코딩을 표시하기 위한 헤더
+        request_message += 'Accept-Language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7\r\n\r\n'   # Accept-Language: 클라이언트가 서버로부터 받고자 하는 언어를 나타내는 헤더
         
         # POST, PUT의 경우 body field 추가
         if requestNum >= 7:
